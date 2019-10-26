@@ -2,7 +2,6 @@ package util_str
 
 import (
 	"database/sql"
-	"encoding/json"
 	"github.com/deckarep/golang-set"
 	"strconv"
 	"strings"
@@ -65,19 +64,49 @@ func GetFloat64(ori string) (float64, error) {
 	return strconv.ParseFloat(ori, 64)
 }
 
-func ToJson(o interface{}) string {
-	jsonBytes, err := json.Marshal(o)
-	if err != nil {
-		return ""
-	} else {
-		return string(jsonBytes)
+func ToIntOrDefault(str string, def int) int {
+	i, e := strconv.Atoi(str)
+	if e != nil {
+		return def
 	}
+	return i
 }
-func ToJsonPretty(o interface{}) string {
-	jsonBytes, err := json.MarshalIndent(o, "", "  ")
-	if err != nil {
-		return ""
+func ToIntOrNil(str string) *int {
+	i, e := strconv.Atoi(str)
+	if e != nil {
+		return nil
+	}
+	return &i
+}
+
+func ToBoolOrDefault(str string, def bool) bool {
+	b, e := strconv.ParseBool(str)
+	if e != nil {
+		return def
+	}
+	return b
+}
+
+func ToFloatOrDefault(str string, def float64) float64 {
+	f, e := strconv.ParseFloat(str, 64)
+	if e != nil {
+		return def
+	}
+	return f
+}
+
+func ToBoolOrNil(str string) *bool {
+	b, e := strconv.ParseBool(str)
+	if e != nil {
+		return nil
+	}
+	return &b
+}
+
+func StrOrDefault(str *string, def string) string {
+	if str == nil {
+		return def
 	} else {
-		return string(jsonBytes)
+		return *str
 	}
 }
